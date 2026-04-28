@@ -1,0 +1,112 @@
+/* Genel Ayarlar ve Sinematik Karanlık Tema */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #141414; /* Netflix benzeri koyu arka plan */
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+h1 {
+    color: #e50914; /* Kırmızı vurgu */
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+}
+
+/* Arama Kutusu ve Buton Tasarımı */
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+#searchInput {
+    flex: 1;
+    padding: 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    background-color: #333;
+    color: white;
+}
+
+#searchBtn {
+    padding: 15px 25px;
+    font-size: 1rem;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#searchBtn:hover {
+    background-color: #b20710;
+}
+
+/* Film Kartı Tasarımı */
+.movie-card {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.movie-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.movie-card h2 {
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+.movie-card p {
+    font-size: 1.1rem;
+    color: #aaa;
+}
+
+.movie-card p strong {
+    color: #ddd;
+}
+
+/* Yumuşak Giriş Animasyonu */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobil Cihazlar İçin Uyum (Responsive) */
+@media (max-width: 480px) {
+    .search-box {
+        flex-direction: column;
+    }
+    #searchBtn {
+        width: 100%;
+    }
+}
