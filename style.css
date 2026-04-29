@@ -1,4 +1,4 @@
-/* Genel Ayarlar ve Sinematik Karanlık Tema */
+
 * {
     margin: 0;
     padding: 0;
@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #141414; /* Netflix benzeri koyu arka plan */
+    background-color: #141414; 
     color: #ffffff;
     display: flex;
     justify-content: center;
@@ -23,7 +23,7 @@ body {
 }
 
 h1 {
-    color: #e50914; /* Kırmızı vurgu */
+    color: #e50914; 
     margin-bottom: 30px;
     font-size: 2.5rem;
 }
@@ -47,7 +47,7 @@ h1 {
 }
 
 #typeFilter, #yearFilter {
-    flex: 1; /* Filtrelerin genişliği eşit olsun */
+    flex: 1; 
     padding: 15px;
     font-size: 1rem;
     border: none;
