@@ -1,69 +1,69 @@
-// 1. API Anahtarını ve HTML elementlerini tanımlıyoruz
+// 1. Define the API Key and HTML elements
 const API_KEY = '1640dff5'; 
 
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const movieContainer = document.getElementById('movieContainer');
 
-// 2. Sayfa yüklendiğinde son aramayı hafızadan (localStorage) çekiyoruz
+// 2. Retrieve the last search from memory (localStorage) when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const lastSearch = localStorage.getItem('lastMovieSearch');
     if (lastSearch) {
         searchInput.value = lastSearch;
-        getMovie(lastSearch); // Eğer hafızada film varsa direkt onu aratıyoruz
+        getMovie(lastSearch); // If there is a movie in memory, search for it directly
     }
 });
 
-// 3. Butona tıklandığında aramayı tetikliyoruz
+// 3. Trigger the search when the button is clicked
 searchBtn.addEventListener('click', () => {
     const movieName = searchInput.value.trim();
     if (movieName) {
         getMovie(movieName);
     } else {
-        // Hata yönetimi (Boş arama engelleme)
-        movieContainer.innerHTML = '<p style="color: orange;">Lütfen bir film adı girin.</p>';
+        // Error handling (Prevent empty search)
+        movieContainer.innerHTML = '<p style="color: orange;">Please enter a movie name.</p>';
     }
 });
 
-// Kullanıcı deneyimi için Enter tuşu ile arama yapabilmeyi ekliyoruz
+// Add the ability to search with the Enter key for better user experience
 searchInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         searchBtn.click();
     }
 });
 
-// 4. API'den film verilerini çeken asenkron (async/await) fonksiyonumuz
+// 4. Our asynchronous (async/await) function that fetches movie data from the API
 async function getMovie(movieName) {
-    // İsteri karşılıyoruz: Aranacak filmi hafızaya kaydediyoruz (Sayfa yenilendiğinde kaybolmaz)
+    // Meeting the requirement: Save the searched movie to memory (It won't be lost when the page is refreshed)
     localStorage.setItem('lastMovieSearch', movieName);
     
-    // Veri gelene kadar ekranda bir yükleniyor mesajı gösterelim
-    movieContainer.innerHTML = '<p>Film aranıyor, lütfen bekleyin...</p>';
+    // Show a loading message on the screen until the data arrives
+    movieContainer.innerHTML = '<p>Searching for the movie, please wait...</p>';
 
     try {
-        // OMDB API'ye istek atıyoruz (t= parametresi tek ve detaylı sonuç getirir)
+        // Send a request to the OMDB API (the t= parameter fetches a single, detailed result)
         const response = await fetch(`https://www.omdbapi.com/?t=${movieName}&apikey=${API_KEY}`);
         const data = await response.json();
 
-        // İsteri karşılıyoruz: Eğer API "Film bulunamadı" derse (Response: "False") hata mesajı basıyoruz
+        // Meeting the requirement: If the API says "Movie not found" (Response: "False"), display an error message
         if (data.Response === "False") {
-            movieContainer.innerHTML = `<p style="color: red;">Hata: ${data.Error} (Film bulunamadı)</p>`;
-            return; // Fonksiyonu burada durdur
+            movieContainer.innerHTML = `<p style="color: red;">Error: ${data.Error} (Movie not found)</p>`;
+            return; // Stop the function here
         }
 
-        // 5. İsteri karşılıyoruz: Veriler başarıyla geldiyse istenen detayları ekrana (HTML içine) yazdırıyoruz
+        // 5. Meeting the requirement: If data arrives successfully, print the requested details to the screen (into HTML)
         movieContainer.innerHTML = `
             <div class="movie-card">
-                <img src="${data.Poster !== 'N/A' ? data.Poster : 'https://via.placeholder.com/300x450?text=Afiş+Yok'}" alt="${data.Title} Afişi" style="max-width: 250px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                <img src="${data.Poster !== 'N/A' ? data.Poster : 'https://via.placeholder.com/300x450?text=No+Poster'}" alt="${data.Title} Poster" style="max-width: 250px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
                 <h2>${data.Title} (${data.Year})</h2>
-                <p><strong>Tür:</strong> ${data.Genre}</p>
-                <p><strong>Yönetmen:</strong> ${data.Director}</p>
-                <p><strong>IMDB Puanı:</strong> ${data.imdbRating}</p>
+                <p><strong>Genre:</strong> ${data.Genre}</p>
+                <p><strong>Director:</strong> ${data.Director}</p>
+                <p><strong>IMDB Rating:</strong> ${data.imdbRating}</p>
             </div>
         `;
     } catch (error) {
-        // İsteri karşılıyoruz: İnternet kopması gibi beklenmeyen hatalar için
-        movieContainer.innerHTML = `<p style="color: red;">Bir bağlantı hatası oluştu. Lütfen internetinizi kontrol edip tekrar deneyin.</p>`;
-        console.error("Hata detayı:", error);
+        // Meeting the requirement: For unexpected errors like internet disconnection
+        movieContainer.innerHTML = `<p style="color: red;">A connection error occurred. Please check your internet connection and try again.</p>`;
+        console.error("Error details:", error);
     }
 }
